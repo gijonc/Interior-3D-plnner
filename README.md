@@ -1,3 +1,5 @@
+This project is demo project developed based on the open source project [blueprint3D](https://github.com/furnishup/blueprint3d) 
+
 ## Developing and Running Locally
 
 To get started, clone the repository and ensure you npm >= 3 and grunt installed, then run:
