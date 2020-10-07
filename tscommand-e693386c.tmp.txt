@@ -1,0 +1,1 @@
+.build/src/blueprint3d.ts --sourcemap --target ES6 --out app/js/blueprint3d.js

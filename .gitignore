@@ -1,0 +1,17 @@
+*.sublime-workspace
+node_modules
+static
+*.DS_Store
+build
+*.sublime-project
+*.log
+
+.vscode
+.tscache
+.build
+bin
+doc
+dist
+app/js/three.min.js
+app/js/blueprint3d.js
+app/js/blueprint3d.js.map

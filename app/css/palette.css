@@ -1,0 +1,55 @@
+.palette {}
+
+.palette > div {
+  width: 19%;
+  display: inline-block;
+}
+
+.color {
+  width: 99%;
+  padding-bottom: 47%;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+}
+
+.tabsContainer {
+	padding: 10px 0;
+	width: 100%;
+}
+
+.tabsContainer > span {
+	display: inline-block;
+	vertical-align: top;
+	margin: 0 5px 5px 0;
+	border: 1px solid #111;
+	border-radius: 28px;
+	padding: 4px 10px;
+	text-transform: capitalize;
+	font-size: 12px;
+	font-weight: 500;
+}
+
+#myTab {
+	/* border: none; */
+}
+
+#myTab a {
+	/* border: none; */
+	color: gray;
+	text-transform: uppercase;
+}
+
+#myTab > li .active {
+	color: #60afbe;
+}
+
+#item-list {
+	box-sizing: border-box;
+	overflow: auto;
+	max-height: 93%;
+	padding: 10px 0;
+	z-index: 0;
+}
