@@ -43,7 +43,7 @@ module BP3D.Model {
 		 this.jsonLoader = new THREE.JSONLoader();
 		 this.jsonLoader.crossOrigin = '';
 
-		 this.gltfLoader = new THREE.GLTFLoader();
+		//  this.gltfLoader = new THREE.GLTFLoader();
 		//  this.gltfLoader.setCrossOrigin('');
 
       //init texture loader

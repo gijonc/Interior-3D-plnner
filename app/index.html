@@ -1,224 +1,312 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Interior 3D Planner - Huedeck</title>
 
-<head>
-	<title>Interior 3D Planner - Huedeck</title>
+    <!-- CSS CDN of fontawesome & Boostrap -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
 
-	<!-- CSS CDN of fontawesome & Boostrap -->
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-	integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/palette.css" rel="stylesheet" />
 
-	<!-- Custom CSS -->
-	<link href="css/styles.css" rel="stylesheet">
-	<link href="css/palette.css" rel="stylesheet">
+    <!-- JS CDN of Jquery & Boostrap -->
 
-	<!-- JS CDN of Jquery & Boostrap -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
 
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-	</script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-	</script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-	</script>
+    <!-- Core script -->
+    <script src="js/three.min.js"></script>
+    <script>
+      import { GLTFLoader } from "https://cdn.rawgit.com/mrdoob/three.js/master/examples/jsm/loaders/GLTFLoader.js";
+    </script>
+    <script src="js/blueprint3d.js"></script>
 
-	<!-- Core script -->
-	<script src="js/three.min.js"></script>
-	<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
-	<script src="js/blueprint3d.js"></script>
+    <!-- UI script -->
+    <script src="js/items.js"></script>
+    <script src="js/app.js"></script>
+  </head>
 
-	<!-- UI script -->
-	<script src="js/items.js"></script>
-	<script src="js/app.js"></script>
-</head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-8 main">
+          <!-- 3D Viewer -->
+          <div id="viewer">
+            <div id="view-controls">
+              <button type="button" class="btn btn-light" id="new">
+                <i class="fas fa-trash"></i>
+              </button>
+              <button type="button" class="btn btn-light" id="saveFile">
+                <i class="fas fa-save"></i>
+              </button>
+              <button type="button" class="btn btn-light btn-file">
+                <input type="file" class="hidden-input" id="loadFile" />
+                <i class="fas fa-folder-open"></i>
+              </button>
+              <button type="button" class="btn btn-light" id="floorplan_tab">
+                <i class="fas fa-edit"></i>
+              </button>
+            </div>
 
-<body>
+            <div id="camera-controls">
+              <button type="button" class="btn btn-light" id="zoom-out">
+                <i class="fas fa-search-minus"></i>
+              </button>
+              <button type="button" class="btn btn-light" id="zoom-in">
+                <i class="fas fa-search-plus"></i>
+              </button>
 
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-8 main">
+              <span>&nbsp;</span>
 
-				<!-- 3D Viewer -->
-				<div id="viewer">
-					<div id="view-controls">
-						<button type="button" class="btn btn-light" id="new">
-							<i class="fas fa-trash"></i>
-						</button>
-						<button type="button" class="btn btn-light" id="saveFile">
-							<i class="fas fa-save"></i>
-						</button>
-						<button type="button" class="btn btn-light btn-file">
-							<input type="file" class="hidden-input" id="loadFile">
-							<i class="fas fa-folder-open"></i>
-						</button>
-						<button type="button" class="btn btn-light" id="floorplan_tab">
-							<i class="fas fa-edit"></i>
-						</button>
-					</div>
+              <button type="button" class="btn btn-light" id="move-left">
+                <i class="fas fa-arrow-left"></i>
+              </button>
+              <span class="btn-group-vertical">
+                <button type="button" class="btn btn-light" id="move-up">
+                  <i class="fas fa-arrow-up"></i>
+                </button>
+                <button type="button" class="btn btn-light" id="move-down">
+                  <i class="fas fa-arrow-down"></i>
+                </button>
+              </span>
+              <button type="button" class="btn btn-light" id="move-right">
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
 
-					<div id="camera-controls">
-						<button type="button" class="btn btn-light" id="zoom-out">
-							<i class="fas fa-search-minus"></i>
-						</button>
-						<button type="button" class="btn btn-light" id="zoom-in">
-							<i class="fas fa-search-plus"></i>
-						</button>
+            <div id="loading-modal">
+              <h1>Loading...</h1>
+            </div>
+          </div>
 
-						<span>&nbsp;</span>
+          <!-- 2D Floorplanner -->
+          <div id="floorplanner" style="display: none">
+            <canvas id="floorplanner-canvas"></canvas>
+            <div id="floorplan-controls">
+              <button id="move" class="btn btn-sm btn-outline-dark">
+                <i class="fas fa-arrows-alt"></i>
+                Move Walls
+              </button>
+              <button id="draw" class="btn btn-sm btn-outline-dark">
+                <span class="fas fa-pencil-alt"></span>
+                Draw Walls
+              </button>
+              <button id="delete" class="btn btn-sm btn-outline-dark">
+                <span class="fas fa-eraser"></span>
+                Delete Walls
+              </button>
+              <span class="float-right">
+                <button class="btn btn-success btn-sm" id="update-floorplan">
+                  Done
+                  <i class="fas fa-check"></i>
+                </button>
+              </span>
+            </div>
+            <div id="draw-walls-hint">
+              Press the "Esc" key to stop drawing walls
+            </div>
+          </div>
 
-						<button type="button" class="btn btn-light" id="move-left">
-							<i class="fas fa-arrow-left"></i>
-						</button>
-						<span class="btn-group-vertical">
-							<button type="button" class="btn btn-light" id="move-up">
-								<i class="fas fa-arrow-up"></i>
-							</button>
-							<button type="button" class="btn btn-light" id="move-down">
-								<i class="fas fa-arrow-down"></i>
-							</button>
-						</span>
-						<button type="button" class="btn btn-light" id="move-right">
-							<i class="fas fa-arrow-right"></i>
-						</button>
-					</div>
+          <!-- Item control -->
+          <div id="context-menu">
+            <button id="context-menu-delete">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+            <button id="context-menu-fix">
+              <i class="fas fa-unlock-alt"></i>
+            </button>
+            <!-- <label><input type="checkbox" id="fixed" /> Lock</label> -->
+            <button id="context-menu-copy">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
+        </div>
 
-					<div id="loading-modal">
-						<h1>Loading...</h1>
-					</div>
-				</div>
+        <div class="col-4 sidebar">
+          <!-- Add Items -->
+          <div id="roomCtrl">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="suggested-room-tab"
+                  data-toggle="tab"
+                  href="#suggested-room"
+                  role="tab"
+                  aria-controls="suggested-room"
+                  aria-selected="false"
+                  >Suggested Items</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="in-room-tab"
+                  data-toggle="tab"
+                  href="#in-room"
+                  role="tab"
+                  aria-controls="in-room"
+                  aria-selected="true"
+                  >In Room Items</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="search-tab"
+                  data-toggle="tab"
+                  href="#searchbar"
+                  role="tab"
+                  aria-controls="suggested-room"
+                  aria-selected="false"
+                  ><i class="fas fa-search"></i
+                ></a>
+              </li>
+            </ul>
 
-				<!-- 2D Floorplanner -->
-				<div id="floorplanner" style="display: none">  
-					<canvas id="floorplanner-canvas"></canvas>
-					<div id="floorplan-controls">
+            <!-- Floor textures -->
+            <div id="floorTexturesDiv" class="textureSelect">
+              <div class="texture-select-header">
+                <button class="hide-texture-btn">
+                  <i class="fas fa-times"></i>
+                </button>
+                <span>Adjust Floor</span>
+              </div>
+              <div class="items-wrapper">
+                <div
+                  class="img-thumbnail texture-select-thumbnail"
+                  texture-url="rooms/textures/light_fine_wood.jpg"
+                  texture-stretch="false"
+                  texture-scale="300"
+                >
+                  <img
+                    alt="Thumbnail light fine wood"
+                    src="rooms/thumbnails/thumbnail_light_fine_wood.jpg"
+                  />
+                </div>
+                <div
+                  class="img-thumbnail texture-select-thumbnail"
+                  texture-url="rooms/textures/hardwood.png"
+                  texture-stretch="false"
+                  texture-scale="400"
+                >
+                  <img
+                    alt="Thumbnail light fine wood"
+                    src="rooms/textures/hardwood.png"
+                  />
+                </div>
+              </div>
+            </div>
 
-						<button id="move" class="btn btn-sm btn-outline-dark">
-							<i class="fas fa-arrows-alt"></i>
-							Move Walls
-						</button>
-						<button id="draw" class="btn btn-sm btn-outline-dark">
-							<span class="fas fa-pencil-alt"></span>
-							Draw Walls
-						</button>
-						<button id="delete" class="btn btn-sm btn-outline-dark">
-							<span class="fas fa-eraser"></span>
-							Delete Walls
-						</button>
-						<span class="float-right">
-							<button class="btn btn-success btn-sm" id="update-floorplan">
-								Done 
-								<i class="fas fa-check"></i>
-							</button>
-						</span>
-					</div>
-					<div id="draw-walls-hint">
-						Press the "Esc" key to stop drawing walls
-					</div>
-				</div>
+            <!-- Wall Textures -->
+            <div id="wallTextures" class="textureSelect">
+              <div class="texture-select-header">
+                <button class="hide-texture-btn">
+                  <i class="fas fa-times"></i>
+                </button>
+                <span>Adjust Wall</span>
+              </div>
+              <div class="items-wrapper">
+                <div
+                  class="img-thumbnail texture-select-thumbnail"
+                  texture-url="rooms/textures/marbletiles.jpg"
+                  texture-stretch="false"
+                  texture-scale="300"
+                >
+                  <img
+                    alt="Thumbnail marbletiles"
+                    src="rooms/thumbnails/thumbnail_marbletiles.jpg"
+                  />
+                </div>
+                <div
+                  class="img-thumbnail texture-select-thumbnail"
+                  texture-url="rooms/textures/wallmap_yellow.png"
+                  texture-stretch="true"
+                  texture-scale=""
+                >
+                  <img
+                    alt="Thumbnail wallmap yellow"
+                    src="rooms/thumbnails/thumbnail_wallmap_yellow.png"
+                  />
+                </div>
+                <div
+                  class="img-thumbnail texture-select-thumbnail"
+                  texture-url="rooms/textures/light_brick.jpg"
+                  texture-stretch="false"
+                  texture-scale="100"
+                >
+                  <img
+                    alt="Thumbnail light brick"
+                    src="rooms/thumbnails/thumbnail_light_brick.jpg"
+                  />
+                </div>
+              </div>
+            </div>
 
-				<!-- Item control -->
-				<div id="context-menu">
-					<button id="context-menu-delete">
-						<i class="fas fa-trash-alt"></i>
-					</button>
-					<button id="context-menu-fix">
-						<i class="fas fa-unlock-alt"></i>
-					</button>
-					<!-- <label><input type="checkbox" id="fixed" /> Lock</label> -->
-					<button id="context-menu-copy">
-						<i class="fas fa-copy"></i>
-					</button>
-				</div>
-			</div>
-
-			<div class="col-4 sidebar">
-				<!-- Add Items -->
-				<div id="roomCtrl">
-					<ul class="nav nav-tabs" id="myTab" role="tablist">
-						<li class="nav-item">
-							<a class="nav-link active" id="suggested-room-tab" data-toggle="tab" href="#suggested-room" role="tab"
-								aria-controls="suggested-room" aria-selected="false">Suggested Items</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link " id="in-room-tab" data-toggle="tab" href="#in-room" role="tab" aria-controls="in-room"
-								aria-selected="true">In Room Items</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" id="search-tab" data-toggle="tab" href="#searchbar" role="tab"
-								aria-controls="suggested-room" aria-selected="false"><i class="fas fa-search"></i></a>
-						</li>
-					</ul>
-
-					<!-- Floor textures -->
-					<div id="floorTexturesDiv" class="textureSelect">
-						<div class="texture-select-header">
-							<button class="hide-texture-btn">
-								<i class="fas fa-times"></i>
-							</button>
-							<span>Adjust Floor</span>
-						</div>
-						<div class="items-wrapper">
-							<div class="img-thumbnail texture-select-thumbnail" texture-url="rooms/textures/light_fine_wood.jpg"
-								texture-stretch="false" texture-scale="300">
-								<img alt="Thumbnail light fine wood" src="rooms/thumbnails/thumbnail_light_fine_wood.jpg" />
-							</div>
-							<div class="img-thumbnail texture-select-thumbnail" texture-url="rooms/textures/hardwood.png"
-								texture-stretch="false" texture-scale="400">
-								<img alt="Thumbnail light fine wood" src="rooms/textures/hardwood.png" />
-							</div>
-						</div>
-					</div>
-
-					<!-- Wall Textures -->
-					<div id="wallTextures" class="textureSelect">
-						<div class="texture-select-header">
-							<button class="hide-texture-btn">
-								<i class="fas fa-times"></i>
-							</button>
-							<span>Adjust Wall</span>
-						</div>
-						<div class="items-wrapper">
-							<div class="img-thumbnail texture-select-thumbnail" texture-url="rooms/textures/marbletiles.jpg"
-								texture-stretch="false" texture-scale="300">
-								<img alt="Thumbnail marbletiles" src="rooms/thumbnails/thumbnail_marbletiles.jpg" />
-							</div>
-							<div class="img-thumbnail texture-select-thumbnail" texture-url="rooms/textures/wallmap_yellow.png"
-								texture-stretch="true" texture-scale="">
-								<img alt="Thumbnail wallmap yellow" src="rooms/thumbnails/thumbnail_wallmap_yellow.png" />
-							</div>
-							<div class="img-thumbnail texture-select-thumbnail" texture-url="rooms/textures/light_brick.jpg"
-								texture-stretch="false" texture-scale="100">
-								<img alt="Thumbnail light brick" src="rooms/thumbnails/thumbnail_light_brick.jpg" />
-							</div>
-						</div>
-					</div>
-
-					<div class="tab-content" id="item-list">
-						<div class="tab-pane show active" id="suggested-room" role="tabpanel" aria-labelledby="suggested-room-tab">
-							<div id="add-items">
-								<div id="added-items-container" class="items-wrapper">
-									<!-- Items added here by items.js -->
-								</div>
-							</div>
-						</div>
-						<div class="tab-pane" id="in-room" role="tabpanel" aria-labelledby="in-room-tab">
-							<div id="in-room-items" class="items-wrapper">
-								<!-- Items added here by items.js -->
-							</div>
-						</div>
-						<div class="tab-pane" id="searchbar" role="tabpanel" aria-labelledby="search-tab-tab">
-							<input type="text" class="form-control" placeholder="Search Keyword...">
-						</div>
-					</div>
-				</div>
-				
-			</div>
-		</div>
-	</div>
-
-</body>
-
+            <div class="tab-content" id="item-list">
+              <div
+                class="tab-pane show active"
+                id="suggested-room"
+                role="tabpanel"
+                aria-labelledby="suggested-room-tab"
+              >
+                <div id="add-items">
+                  <div id="added-items-container" class="items-wrapper">
+                    <!-- Items added here by items.js -->
+                  </div>
+                </div>
+              </div>
+              <div
+                class="tab-pane"
+                id="in-room"
+                role="tabpanel"
+                aria-labelledby="in-room-tab"
+              >
+                <div id="in-room-items" class="items-wrapper">
+                  <!-- Items added here by items.js -->
+                </div>
+              </div>
+              <div
+                class="tab-pane"
+                id="searchbar"
+                role="tabpanel"
+                aria-labelledby="search-tab-tab"
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search Keyword..."
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
